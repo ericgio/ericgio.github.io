@@ -12676,7 +12676,8 @@
 	    if (nextProps.active) {
 	      // This ensures that if the menu items exceed the max-height of the menu,
 	      // the menu will scroll up or down as the user hits the arrow keys.
-	      (0, _reactDom.findDOMNode)(this).firstChild.focus();
+	      // findDOMNode(this).firstChild.focus();
+	      (0, _reactDom.findDOMNode)(this).scrollIntoViewIfNeeded();
 	    }
 	  },
 	  render: function render() {
@@ -13339,7 +13340,7 @@
 	  _handleKeydown: function _handleKeydown(options, e) {
 	    var activeIndex = this.state.activeIndex;
 
-	    debugger;
+
 	    switch (e.keyCode) {
 	      case _keyCode.BACKSPACE:
 	        // Don't let the browser go back.
