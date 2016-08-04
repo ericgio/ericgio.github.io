@@ -12656,10 +12656,6 @@
 
 	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _scrollIntoViewIfNeeded = __webpack_require__(123);
-
-	var _scrollIntoViewIfNeeded2 = _interopRequireDefault(_scrollIntoViewIfNeeded);
-
 	var _react = __webpack_require__(12);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -12678,9 +12674,9 @@
 	  },
 	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 	    if (nextProps.active) {
-	      // This ensures that if the menu items exceed the bounds of the menu,
+	      // This ensures that if the menu items exceed the max-height of the menu,
 	      // the menu will scroll up or down as the user hits the arrow keys.
-	      (0, _scrollIntoViewIfNeeded2.default)((0, _reactDom.findDOMNode)(this));
+	      (0, _reactDom.findDOMNode)(this).firstChild.focus();
 	    }
 	  },
 	  render: function render() {
@@ -13354,6 +13350,11 @@
 	        // Prevent page from scrolling.
 	        e.preventDefault();
 
+	        // Don't cycle through the options if the menu is hidden.
+	        if (!this.state.showMenu) {
+	          return;
+	        }
+
 	        // Increment or decrement index based on user keystroke.
 	        activeIndex += e.keyCode === _keyCode.UP ? -1 : 1;
 
@@ -13912,40 +13913,7 @@
 	exports.default = getFilteredOptions;
 
 /***/ },
-/* 123 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	/**
-	 * Polyfill for webkit `scrollIntoViewIfNeeded()` method.
-	 */
-	function scrollIntoViewIfNeeded(node) {
-	  // Webkit browsers
-	  if (Element.prototype.scrollIntoViewIfNeeded) {
-	    node.scrollIntoViewIfNeeded();
-	    return;
-	  }
-
-	  // FF, IE, etc.
-	  var rect = node.getBoundingClientRect();
-	  var parent = node.parentNode;
-	  var parentRect = parent.getBoundingClientRect();
-
-	  var parentComputedStyle = window.getComputedStyle(parent, null);
-	  var parentBorderTopWidth = parseInt(parentComputedStyle.getPropertyValue('border-top-width'));
-
-	  if (rect.top < parentRect.top || rect.bottom > parentRect.bottom) {
-	    parent.scrollTop = node.offsetTop - parent.offsetTop - parent.clientHeight / 2 - parentBorderTopWidth + node.clientHeight / 2;
-	  }
-	}
-
-	exports.default = scrollIntoViewIfNeeded;
-
-/***/ },
+/* 123 */,
 /* 124 */
 /***/ function(module, exports) {
 
