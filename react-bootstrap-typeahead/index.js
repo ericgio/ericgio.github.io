@@ -13339,7 +13339,7 @@
 	  _handleKeydown: function _handleKeydown(options, e) {
 	    var activeIndex = this.state.activeIndex;
 
-
+	    debugger;
 	    switch (e.keyCode) {
 	      case _keyCode.BACKSPACE:
 	        // Don't let the browser go back.
