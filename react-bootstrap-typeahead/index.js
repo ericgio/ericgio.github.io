@@ -13341,15 +13341,8 @@
 
 
 	    switch (e.keyCode) {
-	      case _keyCode.BACKSPACE:
-	        // Don't let the browser go back.
-	        e.stopPropagation();
-	        break;
 	      case _keyCode.UP:
 	      case _keyCode.DOWN:
-	        // Prevent page from scrolling.
-	        e.preventDefault();
-
 	        // Don't cycle through the options if the menu is hidden.
 	        if (!this.state.showMenu) {
 	          return;
@@ -13369,11 +13362,16 @@
 	        break;
 	      case _keyCode.ESC:
 	      case _keyCode.TAB:
-	        // Prevent things like unintentionally closing dialogs.
-	        e.stopPropagation();
+	        if (e.keyCode === _keyCode.ESC) {
+	          // Prevent closing dialogs.
+	          e.preventDefault();
+	        }
 	        this._hideDropdown();
 	        break;
 	      case _keyCode.RETURN:
+	        // Prevent submitting forms.
+	        e.preventDefault();
+
 	        if (this.state.showMenu) {
 	          var selected = options[activeIndex];
 	          selected && this._handleAddOption(selected);
