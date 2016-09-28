@@ -7442,6 +7442,12 @@
 	  value: true
 	});
 
+	var _noop2 = __webpack_require__(85);
+
+	var _noop3 = _interopRequireDefault(_noop2);
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _classnames = __webpack_require__(20);
 
 	var _classnames2 = _interopRequireDefault(_classnames);
@@ -7450,17 +7456,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactDom = __webpack_require__(25);
+	var _TokenContainer = __webpack_require__(265);
 
-	var _reactOnclickoutside = __webpack_require__(86);
-
-	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
-
-	var _keyCode = __webpack_require__(31);
-
-	var _keyCode2 = _interopRequireDefault(_keyCode);
+	var _TokenContainer2 = _interopRequireDefault(_TokenContainer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 	/**
 	 * Token
@@ -7476,11 +7478,13 @@
 	     * Handler for removing/deleting the token. If not defined, the token will
 	     * be rendered in a read-only state.
 	     */
-	    onRemove: _react.PropTypes.func
+	    onRemove: _react.PropTypes.func,
+	    selected: _react.PropTypes.bool
 	  },
 
-	  getInitialState: function getInitialState() {
+	  getDefaultProps: function getDefaultProps() {
 	    return {
+	      onRemove: _noop3.default,
 	      selected: false
 	    };
 	  },
@@ -7488,33 +7492,38 @@
 	    return this.props.onRemove && !this.props.disabled ? this._renderRemoveableToken() : this._renderToken();
 	  },
 	  _renderRemoveableToken: function _renderRemoveableToken() {
+	    var _props = this.props;
+	    var children = _props.children;
+	    var className = _props.className;
+	    var onRemove = _props.onRemove;
+	    var selected = _props.selected;
+
+	    var otherProps = _objectWithoutProperties(_props, ['children', 'className', 'onRemove', 'selected']);
+
 	    return _react2.default.createElement(
 	      'div',
-	      {
+	      _extends({}, otherProps, {
 	        className: (0, _classnames2.default)('token', 'token-removeable', {
-	          'token-selected': this.state.selected
-	        }, this.props.className),
-	        onBlur: this._handleBlur,
-	        onClick: this._handleSelect,
-	        onFocus: this._handleSelect,
-	        onKeyDown: this._handleKeyDown,
-	        tabIndex: 0 },
-	      this.props.children,
+	          'token-selected': selected
+	        }, className),
+	        tabIndex: 0 }),
+	      children,
 	      _react2.default.createElement(
 	        'span',
 	        {
 	          className: 'close-button',
-	          onClick: this._handleRemove,
+	          onClick: onRemove,
 	          role: 'button' },
 	        '×'
 	      )
 	    );
 	  },
 	  _renderToken: function _renderToken() {
-	    var _props = this.props;
-	    var className = _props.className;
-	    var disabled = _props.disabled;
-	    var href = _props.href;
+	    var _props2 = this.props;
+	    var children = _props2.children;
+	    var className = _props2.className;
+	    var disabled = _props2.disabled;
+	    var href = _props2.href;
 
 	    var classnames = (0, _classnames2.default)('token', className);
 
@@ -7522,50 +7531,19 @@
 	      return _react2.default.createElement(
 	        'a',
 	        { className: classnames, disabled: disabled, href: href },
-	        this.props.children
+	        children
 	      );
 	    }
 
 	    return _react2.default.createElement(
 	      'div',
 	      { className: classnames, disabled: disabled },
-	      this.props.children
+	      children
 	    );
-	  },
-	  _handleBlur: function _handleBlur(e) {
-	    (0, _reactDom.findDOMNode)(this).blur();
-	    this.setState({ selected: false });
-	  },
-	  _handleKeyDown: function _handleKeyDown(e) {
-	    switch (e.keyCode) {
-	      case _keyCode2.default.BACKSPACE:
-	        if (this.state.selected) {
-	          // Prevent backspace keypress from triggering the browser "back"
-	          // action.
-	          e.preventDefault();
-	          this._handleRemove();
-	        }
-	        break;
-	    }
-	  },
-
-
-	  /**
-	   * From `onClickOutside` mixin.
-	   */
-	  handleClickOutside: function handleClickOutside(e) {
-	    this._handleBlur();
-	  },
-	  _handleRemove: function _handleRemove(e) {
-	    this.props.onRemove && this.props.onRemove();
-	  },
-	  _handleSelect: function _handleSelect(e) {
-	    e.stopPropagation();
-	    this.setState({ selected: true });
 	  }
 	});
 
-	exports.default = (0, _reactOnclickoutside2.default)(Token);
+	exports.default = (0, _TokenContainer2.default)(Token);
 
 /***/ },
 /* 67 */
@@ -13803,7 +13781,10 @@
 	        className: (0, _classnames2.default)('bootstrap-typeahead-input', className),
 	        onClick: this._handleInputFocus,
 	        onFocus: this._handleInputFocus,
-	        style: { outline: 'none' },
+	        style: {
+	          outline: 'none',
+	          position: 'relative'
+	        },
 	        tabIndex: -1 },
 	      _react2.default.createElement('input', _extends({}, inputProps, {
 	        className: (0, _classnames2.default)('bootstrap-typeahead-input-main', 'form-control', {
@@ -26672,6 +26653,91 @@
 		// When the module is disposed, remove the <style> tags
 		module.hot.dispose(function() { update(); });
 	}
+
+/***/ },
+/* 263 */,
+/* 264 */,
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _react = __webpack_require__(12);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactDom = __webpack_require__(25);
+
+	var _reactOnclickoutside = __webpack_require__(86);
+
+	var _reactOnclickoutside2 = _interopRequireDefault(_reactOnclickoutside);
+
+	var _keyCode = __webpack_require__(31);
+
+	var _keyCode2 = _interopRequireDefault(_keyCode);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Higher-order component that encapsulates Token behaviors, allowing them to
+	 * be easily re-used.
+	 */
+	var TokenContainer = function TokenContainer(Component) {
+	  return (0, _reactOnclickoutside2.default)(_react2.default.createClass({
+	    getInitialState: function getInitialState() {
+	      return {
+	        selected: false
+	      };
+	    },
+	    render: function render() {
+	      return _react2.default.createElement(Component, _extends({}, this.props, this.state, {
+	        onBlur: this._handleBlur,
+	        onClick: this._handleSelect,
+	        onFocus: this._handleSelect,
+	        onKeyDown: this._handleKeyDown
+	      }));
+	    },
+	    _handleBlur: function _handleBlur(e) {
+	      (0, _reactDom.findDOMNode)(this).blur();
+	      this.setState({ selected: false });
+	    },
+	    _handleKeyDown: function _handleKeyDown(e) {
+	      switch (e.keyCode) {
+	        case _keyCode2.default.BACKSPACE:
+	          if (this.state.selected) {
+	            // Prevent backspace keypress from triggering the browser "back"
+	            // action.
+	            e.preventDefault();
+	            this._handleRemove();
+	          }
+	          break;
+	      }
+	    },
+
+
+	    /**
+	     * From `onClickOutside` HOC.
+	     */
+	    handleClickOutside: function handleClickOutside(e) {
+	      this._handleBlur();
+	    },
+	    _handleRemove: function _handleRemove(e) {
+	      this.props.onRemove && this.props.onRemove();
+	    },
+	    _handleSelect: function _handleSelect(e) {
+	      e.stopPropagation();
+	      this.setState({ selected: true });
+	    }
+	  }));
+	};
+
+	exports.default = TokenContainer;
 
 /***/ }
 /******/ ]);
