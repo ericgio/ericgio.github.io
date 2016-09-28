@@ -13122,15 +13122,15 @@
 	  _handleKeydown: function _handleKeydown(e) {
 	    switch (e.keyCode) {
 	      case _keyCode.BACKSPACE:
-	        // Prevent browser "back" action.
-	        e.preventDefault();
-
 	        var inputNode = (0, _reactDom.findDOMNode)(this.refs.input);
 	        if (inputNode && inputNode.contains(document.activeElement) && !this.props.text) {
 	          // If the input is selected and there is no text, select the last
 	          // token when the user hits backspace.
 	          var sibling = inputNode.previousSibling;
 	          sibling && sibling.focus();
+
+	          // Prevent browser "back" action.
+	          e.preventDefault();
 	        }
 	        break;
 	    }
